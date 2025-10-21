@@ -9,6 +9,12 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
 }
+dependencies {
+    val luceneVersion = "10.3.1"
+    implementation("org.apache.lucene:lucene-core:$luceneVersion")
+    implementation("org.apache.lucene:lucene-analysis-common:${luceneVersion}")
+}
+
 
 tasks.test {
     useJUnitPlatform()
