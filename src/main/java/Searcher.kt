@@ -11,14 +11,22 @@ import org.apache.lucene.store.FSDirectory
 import java.nio.file.Path
 
 object Searcher {
+    private val LUCENE_META = setOf('.', '\\', '+', '*', '?', '^', '$', '[', ']', '(', ')', '{', '}', '|')
+
     data class Hit(val raw: String, val score: Float)
 
-    private fun subsequenceRegex(input: String): String =
-        input.map { Regex.escape(it.toString()) }.joinToString(".*")
+    fun subsequenceRegex(input: String): String {
+        /* Regex.escape is not compatible with lucenes regex parser */
+        return input.asSequence()
+            .joinToString(".*") { ch ->
+                if (ch in LUCENE_META) "\\$ch" else ch.toString()
+            }
+    }
 
     private fun buildQuery(lower: String): Query {
         val humps = PrefixQuery(Term(Fields.HUMPS, lower))
         val parts = PrefixQuery(Term(Fields.PARTS, lower))
+        println(subsequenceRegex(lower))
         val subseqeuence = RegexpQuery(Term(Fields.NAME_LC, subsequenceRegex(lower)))
 
         return BooleanQuery.Builder()
