@@ -17,6 +17,7 @@ object Indexer {
             IndexWriter(dir, config).use { writer ->
                 identifiers.forEachIndexed { id, raw ->
                     if (raw.isBlank()) return@forEachIndexed
+                    println("Indexing $raw ($id)")
                     val doc = Document().apply {
                         add(StoredField(Fields.RAW, raw))
                         add(StringField(Fields.NAME_LC, raw.lowercase(), Field.Store.NO))

@@ -26,7 +26,6 @@ object Searcher {
     private fun buildQuery(lower: String): Query {
         val humps = PrefixQuery(Term(Fields.HUMPS, lower))
         val parts = PrefixQuery(Term(Fields.PARTS, lower))
-        println(subsequenceRegex(lower))
         val subseqeuence = RegexpQuery(Term(Fields.NAME_LC, subsequenceRegex(lower)))
 
         return BooleanQuery.Builder()
