@@ -17,9 +17,14 @@ dependencies {
     implementation("org.apache.lucene:lucene-core:$luceneVersion")
     implementation("org.apache.lucene:lucene-analysis-common:${luceneVersion}")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.6")
+
     testImplementation(kotlin("test"))
 }
 
+application {
+    mainClass.set("CliKt")
+}
 
 tasks.test {
     useJUnitPlatform()
